@@ -3,4 +3,4 @@
 
 Preview:
 
-![Click me to open preview](https://st4rchaser.github.io/rushb-khon-la-khrueng/preview.gif)
+![Click me to open preview](https://i.imgur.com/j7F5tIK.png)
