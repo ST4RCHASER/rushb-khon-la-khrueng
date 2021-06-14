@@ -51,7 +51,7 @@
                 if (this.status !== 200) jsonfile = { remaining: 0 };
                 if (typeof jsonfile == 'undefined') jsonfile = { remaining: 0 };
                 if (typeof jsonfile.remaining == 'undefined') jsonfile.remaining = 0;
-                updateValue('remaining', 'คงเหลือ <font class="glow ani">' + Comma(jsonfile.remaining) + '</font> สิทธ์');
+                updateValue('remaining', 'คงเหลือ <br><font class="glow ani">' + Comma(jsonfile.remaining) + '</font><br> สิทธ์');
                 document.title = jsonfile.remaining > 0 ? 'คงเหลือ: ' + Comma(jsonfile.remaining) : 'สิทธ์เต็มแล้ว';
                 o += (last_num - jsonfile.remaining);
                 last_num = jsonfile.remaining;
