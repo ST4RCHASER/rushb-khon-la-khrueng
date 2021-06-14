@@ -15,8 +15,10 @@
 </body>
 <p id="title">คนละครึ่ง RUSH B</p>
 <p id="time">โปรดรอสักครู่...</p>
-<p id="remaining">โปรดรอสักครู่...</p>
-<p id="speed"></p>
+<p id="remaining">คงเหลือ <font class="glow ani"><br>0<br></font> สิทธ์</p>
+<p id="speed">
+    <font class="glow ani">สิทธ์ครบกำหนดแล้ว</font>
+</p>
 <script>
     let last_sec = 0;
     let jsonfile;
@@ -32,8 +34,8 @@
             document.getElementById(element_name).innerHTML = new_value;
         }
     }
-    var timer = setInterval(function () {
-        let today = new Date();
+    function updateTime() {
+        today = new Date();
         if (last_sec != today.getSeconds()) {
             last_sec = today.getSeconds();
             if (dot == ":") {
@@ -43,6 +45,17 @@
             }
         }
         let time = (today.getHours() > 9 ? today.getHours() : '0' + today.getHours()) + dot + (today.getMinutes() > 9 ? today.getMinutes() : '0' + today.getMinutes()) + dot + (today.getSeconds() > 9 ? today.getSeconds() : '0' + today.getSeconds()) + '<font style="font-size: 50%">' + '</font>';
+        updateValue('time', 'ณ เวลา <font class="glow">' + time + '</font> น.');
+        if ((today.getSeconds() == 1 && today.getMinutes() == 0) && today.getHours() == 6 || today.getHours() == 22) {
+            location.reload();
+        }
+    }
+    let today = new Date();
+    var clock = setInterval(function () {
+        updateTime();
+    }, 1000);
+    updateTime();
+    var timer = setInterval(function () {
         let tu;
         tu = new XMLHttpRequest();
         tu.onreadystatechange = function () {
@@ -56,11 +69,18 @@
                 o += (last_num - jsonfile.remaining);
                 last_num = jsonfile.remaining;
                 count += 30;
-                updateValue('time', 'ณ เวลา <font class="glow">' + time + '</font> น.');
                 if (jsonfile.remaining > 0) {
-                    updateValue('speed', 'ความเร็ว <font class="glow">' + (set < 1 && last_num > 0 ? 'รอสักครู่...' : Comma(set)) + '</font> สิทธ์ต่อวินาที');
+                    if (today.getHours() >= 10 || today.getHours() <= 6) {
+                        document.title = 'คนละครึ่ง RUSH B: นอกเวลา';
+                        updateValue('speed', '<font class="glow ani">อยู่นอกเวลาลงทะเบียน</font>');
+                        clearInterval(timer);
+                    } else {
+                        updateValue('speed', 'ความเร็ว <font class="glow">' + (set < 1 && last_num > 0 ? '0' : Comma(set)) + '</font> สิทธ์ต่อวินาที');
+                    }
                 } else {
-                    updateValue('speed', '<font class="glow">สิทธ์เต็มแล้ว</font>');
+                    updateValue('speed', '<font class="glow">สิทธ์ครบกำหนดแล้ว</font>');
+                    document.title = 'คนละครึ่ง RUSH B: ครบกำหนด';
+                    clearInterval(timer);
                 }
                 if (count > 999) {
                     set = o;
