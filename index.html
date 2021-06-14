@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คนละครึ่ง Remaning</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+</body>
+<p id="title">คนละครึ่ง RUSH B</p>
+<p id="remaining"></p>
+<p id="speed"></p>
+<script>
+    let last_sec = 0;
+    let jsonfile;
+    let dot = ":";
+    let o = 0;
+    let last_num = 0;
+    let count = 0;
+    let set = 0;
+    setInterval(function () {
+        let today = new Date();
+        if (last_sec != today.getSeconds()) {
+            last_sec = today.getSeconds();
+            if (dot == ":") {
+                dot = " ";
+            } else {
+                dot = ":"
+            }
+        }
+        let time = (today.getHours() > 9 ? today.getHours() : '0' + today.getHours()) + dot + (today.getMinutes() > 9 ? today.getMinutes() : '0' + today.getMinutes()) + dot + (today.getSeconds() > 9 ? today.getSeconds() : '0' + today.getSeconds()) + '<font style="font-size: 50%">' + '</font>';
+        let tu;
+        tu = new XMLHttpRequest();
+        tu.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                jsonfile = JSON.parse(tu.responseText);
+                document.getElementById('remaining').innerHTML = 'คงเหลือ <font class="glow">' + Comma(jsonfile.remaining) + '</font> สิทธ์';
+                document.title = 'คงเหลือ: ' + Comma(jsonfile.remaining);
+                o += (last_num - jsonfile.remaining);
+                last_num = jsonfile.remaining;
+                count += 30;
+                document.getElementById('speed').innerHTML = 'ขณะนี้เวลา <font class="glow">' + time + '</font> ด้วยความเร็ว <font class="glow">' + (set < 1 && last_num > 0 ? 'รอสักครู่...' : Comma(set)) + '</font> สิทธ์ต่อวินาที...';
+                if (count > 999) {
+                    set = o;
+                    count = 0;
+                    o = 0;
+                }
+            }
+        };
+        tu.open("GET", "https://api.xn--42caj4e6bk1f5b1j.com/quota/hh", true);
+        tu.send();
+    }, 30);
+    function Comma(Num) { //function to add commas to textboxes
+        Num += '';
+        Num = Num.replace(',', ''); Num = Num.replace(',', ''); Num = Num.replace(',', '');
+        Num = Num.replace(',', ''); Num = Num.replace(',', ''); Num = Num.replace(',', '');
+        x = Num.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1))
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        return x1 + x2;
+    }
+</script>
+<style>
+    #title{
+        font-size: 12vh;
+    }
+    #remaining{
+        font-size: 9vh;
+    }
+    #speed{
+        font-size: 6vh;
+    }
+    body {
+        background-color: black;
+        text-align: center;
+        font-family: 'Kanit', sans-serif;
+        background-image: url('https://i.imgur.com/rCgo6yd.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: white;
+    }
+
+    .glow {
+        color: #fff;
+        text-align: center;
+        animation: glow 1s ease-in-out infinite alternate;
+    }
+
+    @-webkit-keyframes glow {
+        from {
+            text-shadow: 0 0 3px #fff, 0 0 5px #fff, 0 0 7px #a500e6, 0 0 9px #a500e6, 0 0 11px #a500e6, 0 0 13px #a500e6, 0 0 15px #a500e6;
+        }
+
+        to {
+            text-shadow: 0 0 3px #fff, 0 0 5px #c74dff, 0 0 7px #c74dff, 0 0 9px #c74dff, 0 0 11px #c74dff, 0 0 13px #c74dff, 0 0 15px #c74dff;
+        }
+    }
+</style>
+
+</html>
