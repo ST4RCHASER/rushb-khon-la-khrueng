@@ -14,6 +14,7 @@
 
 </body>
 <p id="title">คนละครึ่ง RUSH B</p>
+<p id="time">โปรดรอสักครู่...</p>
 <p id="remaining">โปรดรอสักครู่...</p>
 <p id="speed"></p>
 <script>
@@ -24,7 +25,14 @@
     let last_num = 0;
     let count = 0;
     let set = 0;
-    setInterval(function () {
+    let value_list = {};
+    function updateValue(element_name, new_value) {
+        if (value_list[element_name] != new_value) {
+            value_list[element_name] = new_value
+            document.getElementById(element_name).innerHTML = new_value;
+        }
+    }
+    var timer = setInterval(function () {
         let today = new Date();
         if (last_sec != today.getSeconds()) {
             last_sec = today.getSeconds();
@@ -43,12 +51,17 @@
                 if (this.status !== 200) jsonfile = { remaining: 0 };
                 if (typeof jsonfile == 'undefined') jsonfile = { remaining: 0 };
                 if (typeof jsonfile.remaining == 'undefined') jsonfile.remaining = 0;
-                document.getElementById('remaining').innerHTML = 'คงเหลือ <font class="glow">' + Comma(jsonfile.remaining) + '</font> สิทธ์';
-                document.title = 'คงเหลือ: ' + Comma(jsonfile.remaining);
+                updateValue('remaining', 'คงเหลือ <font class="glow ani">' + Comma(jsonfile.remaining) + '</font> สิทธ์');
+                document.title = jsonfile.remaining > 0 ? 'คงเหลือ: ' + Comma(jsonfile.remaining) : 'สิทธ์เต็มแล้ว';
                 o += (last_num - jsonfile.remaining);
                 last_num = jsonfile.remaining;
                 count += 30;
-                document.getElementById('speed').innerHTML = 'ขณะนี้เวลา <font class="glow">' + time + '</font>' + (jsonfile.remaining > 0 ? ' ด้วยความเร็ว <font class="glow">' + (set < 1 && last_num > 0 ? 'รอสักครู่...' : Comma(set)) + '</font> สิทธ์ต่อวินาที...' : '');
+                updateValue('time', 'ณ เวลา <font class="glow">' + time + '</font> น.');
+                if (jsonfile.remaining > 0) {
+                    updateValue('speed', 'ความเร็ว <font class="glow">' + (set < 1 && last_num > 0 ? 'รอสักครู่...' : Comma(set)) + '</font> สิทธ์ต่อวินาที');
+                } else {
+                    updateValue('speed', '<font class="glow">สิทธ์เต็มแล้ว</font>');
+                }
                 if (count > 999) {
                     set = o;
                     count = 0;
@@ -74,39 +87,54 @@
 </script>
 <style>
     #title {
-        font-size: 12vh;
+        font-size: 5.5vh;
+        font-weight: bold;
     }
 
     #remaining {
-        font-size: 9vh;
+        font-size: 7vh;
     }
 
-    #speed {
-        font-size: 6vh;
+    #speed,
+    #time {
+        font-size: 5vh;
+    }
+
+    #time {
+        line-height: 1px;
     }
 
     body {
         background-color: black;
         text-align: center;
         font-family: 'Kanit', sans-serif;
-        background-image: url('https://i.imgur.com/rCgo6yd.png');
-        background-repeat: no-repeat;
+        background: url(https://i.imgur.com/rCgo6yd.png) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
         background-size: cover;
         color: white;
     }
 
     .glow {
         color: #fff;
-        animation: ani-glow 1s ease-in-out infinite alternate;
+        text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 8px #966fd6, 0 0 11px #966fd6, 0 0 14px #966fd6, 0 0 17px #966fd6, 0 0 20px #966fd6;
+    }
+
+    .ani {
+        animation: ani-glow 0.5s ease-in-out alternate;
     }
 
     @keyframes ani-glow {
         from {
-            text-shadow: 0 0 0px #fff, 0 0 1px #fff, 0 0 3px #a500e6, 0 0 5px #a500e6, 0 0 7px #a500e6, 0 0 9px #a500e6, 0 0 11px #a500e6;
+            text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 8px #fff, 0 0 11px #fff, 0 0 14px #fff, 0 0 17px #fff, 0 0 20px #fff;
+            color: #966fd6;
+            font-size: 130%;
         }
 
         to {
-            text-shadow: 0 0 5px #fff, 0 0 7px #fff, 0 0 9px #fff, 0 0 11px #fff, 0 0 13px #fff, 0 0 15px #fff, 0 0 17px #fff;
+            text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 8px #966fd6, 0 0 11px #966fd6, 0 0 14px #966fd6, 0 0 17px #966fd6, 0 0 20px #966fd6;
+            color: white;
         }
     }
 </style>
