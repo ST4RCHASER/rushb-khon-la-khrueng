@@ -97,17 +97,16 @@
 
     .glow {
         color: #fff;
-        text-align: center;
-        animation: glow 1s ease-in-out infinite alternate;
+        animation: ani-glow 1s ease-in-out infinite alternate;
     }
 
-    @-webkit-keyframes glow {
+    @keyframes ani-glow {
         from {
-            text-shadow: 0 0 3px #fff, 0 0 5px #fff, 0 0 7px #a500e6, 0 0 9px #a500e6, 0 0 11px #a500e6, 0 0 13px #a500e6, 0 0 15px #a500e6;
+            text-shadow: 0 0 0px #fff, 0 0 1px #fff, 0 0 3px #a500e6, 0 0 5px #a500e6, 0 0 7px #a500e6, 0 0 9px #a500e6, 0 0 11px #a500e6;
         }
 
         to {
-            text-shadow: 0 0 3px #fff, 0 0 5px #c74dff, 0 0 7px #c74dff, 0 0 9px #c74dff, 0 0 11px #c74dff, 0 0 13px #c74dff, 0 0 15px #c74dff;
+            text-shadow: 0 0 5px #fff, 0 0 7px #fff, 0 0 9px #fff, 0 0 11px #fff, 0 0 13px #fff, 0 0 15px #fff, 0 0 17px #fff;
         }
     }
 </style>
