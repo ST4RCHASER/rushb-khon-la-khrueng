@@ -38,14 +38,17 @@
         let tu;
         tu = new XMLHttpRequest();
         tu.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
+            if (this.readyState == 4) {
                 jsonfile = JSON.parse(tu.responseText);
+                if (this.status !== 200) jsonfile = { remaining: 0 };
+                if (typeof jsonfile == 'undefined') jsonfile = { remaining: 0 };
+                if (typeof jsonfile.remaining == 'undefined') jsonfile.remaining = 0;
                 document.getElementById('remaining').innerHTML = 'คงเหลือ <font class="glow">' + Comma(jsonfile.remaining) + '</font> สิทธ์';
                 document.title = 'คงเหลือ: ' + Comma(jsonfile.remaining);
                 o += (last_num - jsonfile.remaining);
                 last_num = jsonfile.remaining;
                 count += 30;
-                document.getElementById('speed').innerHTML = 'ขณะนี้เวลา <font class="glow">' + time + '</font> ด้วยความเร็ว <font class="glow">' + (set < 1 && last_num > 0 ? 'รอสักครู่...' : Comma(set)) + '</font> สิทธ์ต่อวินาที...';
+                document.getElementById('speed').innerHTML = 'ขณะนี้เวลา <font class="glow">' + time + '</font>' + (jsonfile.remaining > 0 ? ' ด้วยความเร็ว <font class="glow">' + (set < 1 && last_num > 0 ? 'รอสักครู่...' : Comma(set)) + '</font> สิทธ์ต่อวินาที...' : '');
                 if (count > 999) {
                     set = o;
                     count = 0;
@@ -70,15 +73,18 @@
     }
 </script>
 <style>
-    #title{
+    #title {
         font-size: 12vh;
     }
-    #remaining{
+
+    #remaining {
         font-size: 9vh;
     }
-    #speed{
+
+    #speed {
         font-size: 6vh;
     }
+
     body {
         background-color: black;
         text-align: center;
