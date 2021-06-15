@@ -28,6 +28,7 @@
     let count = 0;
     let set = 0;
     let value_list = {};
+    let hours = 0;
     function updateValue(element_name, new_value) {
         if (value_list[element_name] != new_value) {
             value_list[element_name] = new_value
@@ -44,9 +45,10 @@
                 dot = ":"
             }
         }
-        let time = (today.getHours() > 9 ? today.getHours() : '0' + today.getHours()) + dot + (today.getMinutes() > 9 ? today.getMinutes() : '0' + today.getMinutes()) + dot + (today.getSeconds() > 9 ? today.getSeconds() : '0' + today.getSeconds()) + '<font style="font-size: 50%">' + '</font>';
+        hours = today.toLocaleString('th-TH', { hour: 'numeric', hour12: false });
+        let time = (hours > 9 ? hours : '0' + hours) + dot + (today.getMinutes() > 9 ? today.getMinutes() : '0' + today.getMinutes()) + dot + (today.getSeconds() > 9 ? today.getSeconds() : '0' + today.getSeconds()) + '<font style="font-size: 50%">' + '</font>';
         updateValue('time', 'ณ เวลา <font class="glow">' + time + '</font> น.');
-        if ((today.getSeconds() == 1 && today.getMinutes() == 0) && today.getHours() == 6 || today.getHours() == 22) {
+        if ((today.getSeconds() == 1 && today.getMinutes() == 0) && hours == 6 || hours == 22) {
             location.reload();
         }
     }
@@ -70,7 +72,7 @@
                 last_num = jsonfile.remaining;
                 count += 30;
                 if (jsonfile.remaining > 0) {
-                    if (today.getHours() >= 10 || today.getHours() <= 6) {
+                    if (today.hours >= 10 || today.hours <= 6) {
                         document.title = 'คนละครึ่ง RUSH B: นอกเวลา';
                         updateValue('speed', '<font class="glow ani">อยู่นอกเวลาลงทะเบียน</font>');
                         clearInterval(timer);
