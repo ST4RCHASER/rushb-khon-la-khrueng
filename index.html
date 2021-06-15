@@ -72,7 +72,7 @@
                 last_num = jsonfile.remaining;
                 count += 30;
                 if (jsonfile.remaining > 0) {
-                    if (today.hours >= 10 || today.hours <= 6) {
+                    if (hours >= 22 || hours <= 6) {
                         document.title = 'คนละครึ่ง RUSH B: นอกเวลา';
                         updateValue('speed', '<font class="glow ani">อยู่นอกเวลาลงทะเบียน</font>');
                         clearInterval(timer);
