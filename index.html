@@ -46,7 +46,7 @@
             }
         }
         hours = today.toLocaleString('th-TH', { hour: 'numeric', hour12: false });
-        let time = (hours > 9 ? hours : '0' + hours) + dot + (today.getMinutes() > 9 ? today.getMinutes() : '0' + today.getMinutes()) + dot + (today.getSeconds() > 9 ? today.getSeconds() : '0' + today.getSeconds()) + '<font style="font-size: 50%">' + '</font>';
+        let time = hours + dot + (today.getMinutes() > 9 ? today.getMinutes() : '0' + today.getMinutes()) + dot + (today.getSeconds() > 9 ? today.getSeconds() : '0' + today.getSeconds()) + '<font style="font-size: 50%">' + '</font>';
         updateValue('time', 'ณ เวลา <font class="glow">' + time + '</font> น.');
         if ((today.getSeconds() == 1 && today.getMinutes() == 0) && hours == 6 || hours == 22) {
             location.reload();
